@@ -14,7 +14,7 @@
 - Member 2: Adheeja S Farhan - College of Engineering,Trivandrum
 
 ### Hosted Project Link
-<a href="tink-her-hack-beige.vercel.app">Click</a>
+<a href="https://tink-her-hack-beige.vercel.app">Click</a>
 
 ### Project Description
 Penny-Wise is a web-based personal finance app built specifically for college students. It helps users track daily expenses, set monthly budgets, and learn the fundamentals of budgeting and investing — all in one place. The app also features an AI-powered Financial Twin that analyses your real spending data and gives personalised, actionable financial advice.
