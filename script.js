@@ -754,3 +754,160 @@ renderWTCard(0);
 // Init tracker month label
 const [iy, im] = currentMonth.split('-');
 document.getElementById('month-label').textContent = new Date(iy, im-1, 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+/* ══════════════════════════════════════
+   FINANCIAL TWIN — AI CHATBOT
+   (Gemini-powered, reads live appData)
+══════════════════════════════════════ */
+let chatHistory  = [];
+let chatOpened   = false;
+let aiThinking   = false;
+
+function toggleChat() {
+  const panel = document.getElementById('ai-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    if (!chatOpened) {
+      chatOpened = true;
+      openingAnalysis();
+    }
+    setTimeout(() => document.getElementById('ai-input').focus(), 300);
+  }
+}
+
+function buildSystemPrompt() {
+  const monthExpenses = getMonthExpenses();
+  const budget = appData.budgets[currentMonth] || null;
+  const totalSpent = monthExpenses.reduce((s, e) => s + e.amount, 0);
+  const byCat = {};
+  monthExpenses.forEach(e => { byCat[e.subcategory] = (byCat[e.subcategory] || 0) + e.amount; });
+  const needAmt  = monthExpenses.filter(e => e.cat === 'need').reduce((s, e) => s + e.amount, 0);
+  const wantAmt  = monthExpenses.filter(e => e.cat === 'want').reduce((s, e) => s + e.amount, 0);
+  const extraAmt = monthExpenses.filter(e => e.cat === 'extra').reduce((s, e) => s + e.amount, 0);
+
+  const now = new Date();
+  const lastDay  = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const daysLeft = lastDay - now.getDate();
+  const daysPassed = now.getDate();
+  const dailyAvg = daysPassed > 0 ? totalSpent / daysPassed : 0;
+
+  return `You are "Financial Twin" — a sharp, warm personal finance advisor inside CampusCents, a student budgeting app. You have FULL ACCESS to this student's real spending data. Never say you don't have their data.
+
+TODAY: ${now.toDateString()}
+CURRENT MONTH: ${currentMonth} (${daysPassed} days in, ${daysLeft} days left)
+BUDGET: ${budget ? '₹' + budget : 'Not set'}
+TOTAL SPENT: ₹${totalSpent.toFixed(0)}
+REMAINING: ${budget ? '₹' + (budget - totalSpent).toFixed(0) : 'Budget not set'}
+DAILY AVERAGE: ₹${dailyAvg.toFixed(0)}/day
+PROJECTED MONTH-END: ₹${(dailyAvg * lastDay).toFixed(0)}
+
+SPENDING BY TYPE:
+• Needs: ₹${needAmt.toFixed(0)} (${totalSpent ? Math.round(needAmt / totalSpent * 100) : 0}%)
+• Wants: ₹${wantAmt.toFixed(0)} (${totalSpent ? Math.round(wantAmt / totalSpent * 100) : 0}%)
+• Additional: ₹${extraAmt.toFixed(0)} (${totalSpent ? Math.round(extraAmt / totalSpent * 100) : 0}%)
+
+TOP CATEGORIES:
+${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(x => '• ' + x[0] + ': ₹' + x[1].toFixed(0)).join('\n')}
+
+ALL EXPENSES THIS MONTH:
+${monthExpenses.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).map(e => `• ${e.date} | ₹${e.amount} | ${e.subcategory} | ${e.cat} | "${e.desc}" @ ${e.place}`).join('\n')}
+
+RULES: Be specific with their real numbers. Be concise (2-4 sentences). Be direct and warm. Use ₹. Do the actual math when they ask about affording something. Never say "As an AI" or "I don't have access".`;
+}
+
+function appendMessage(role, text) {
+  const msgs = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg typing';
+  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+const GEMINI_API_KEY = "AIzaSyDRfxmhv0bHpOydRYOGyIkkCt9WoPTp04A";
+
+async function callGemini(promptText) {
+  const res = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_API_KEY,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: promptText }] }]
+      })
+    }
+  );
+  const data = await res.json();
+  if (!res.ok) throw new Error((data.error && data.error.message) || 'Gemini API error');
+  return (data.candidates?.[0]?.content?.parts?.[0]?.text) || 'No response.';
+}
+
+async function openingAnalysis() {
+  const typing = appendTyping();
+  const monthExpenses = getMonthExpenses();
+  const taskPrompt = monthExpenses.length > 0
+    ? "Give a sharp, specific 2-3 sentence opening analysis of this student's spending this month. Use their real numbers. Lead with the single most important insight. End with one focused practical question."
+    : "The student hasn't logged any expenses yet. In 2 sentences, tell them specifically what insights you'll surface once they start logging — make it feel genuinely useful. Then ask them one question to get started.";
+  try {
+    const text = await callGemini(buildSystemPrompt() + '\n\nYour task: ' + taskPrompt);
+    typing.remove();
+    appendMessage('ai', text);
+    chatHistory = [{ role: 'user', content: taskPrompt }, { role: 'assistant', content: text }];
+  } catch (err) {
+    typing.remove();
+    appendMessage('ai', "Hi! I'm your Financial Twin. I can see all your spending data and give you personalised insights. What would you like to know?");
+  }
+}
+
+async function sendToAI(text) {
+  if (aiThinking) return;
+  aiThinking = true;
+  document.getElementById('ai-send').disabled = true;
+  appendMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  const typing = appendTyping();
+  try {
+    const conversation = chatHistory.map(m => m.role.toUpperCase() + ': ' + m.content).join('\n');
+    const reply = await callGemini(
+      buildSystemPrompt() + '\n\nConversation so far:\n' + conversation + '\n\nNow reply as Financial Twin to the last USER message:'
+    );
+    typing.remove();
+    appendMessage('ai', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    typing.remove();
+    appendMessage('ai', 'Could not reach Gemini right now. Check the API key and network connection.');
+  }
+  aiThinking = false;
+  document.getElementById('ai-send').disabled = false;
+}
+
+function sendAIMessage() {
+  const input = document.getElementById('ai-input');
+  const text = input.value.trim();
+  if (!text || aiThinking) return;
+  input.value = '';
+  sendToAI(text);
+}
+
+function askQuick(prompt) {
+  if (aiThinking) return;
+  document.getElementById('ai-quick-prompts').style.display = 'none';
+  sendToAI(prompt);
+}
+
+// Enter key to send
+document.getElementById('ai-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendAIMessage();
+});

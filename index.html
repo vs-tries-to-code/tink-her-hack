@@ -6,7 +6,6 @@
 <title>CampusCents — Student Budget Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <link href="./style.css" rel="stylesheet">
-<script src="./script.js"></script>
 </head>
 <body>
 
@@ -384,5 +383,36 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- FINANCIAL TWIN -->
+<button id="ai-fab" onclick="toggleChat()">
+  <div class="fab-dot"></div>
+  🧠 Finbot
+</button>
+
+<div id="ai-panel">
+  <div id="ai-header">
+    <div id="ai-header-left">
+      <div id="ai-avatar">🧠</div>
+      <div>
+        <div id="ai-title">Finbot</div>
+        <div id="ai-subtitle">Knows your spending · Gemini</div>
+      </div>
+    </div>
+    <button id="ai-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="ai-messages"></div>
+  <div id="ai-quick-prompts">
+    <button class="quick-prompt" onclick="askQuick('Am I on track this month?')">On track?</button>
+    <button class="quick-prompt" onclick="askQuick('Where am I wasting money?')">Wasting money?</button>
+    <button class="quick-prompt" onclick="askQuick('How much can I realistically save this month?')">Save how much?</button>
+    <button class="quick-prompt" onclick="askQuick('Give me one actionable tip to cut spending today.')">Quick tip</button>
+  </div>
+  <div id="ai-input-row">
+    <input id="ai-input" type="text" placeholder="Ask anything about your finances…" autocomplete="off">
+    <button id="ai-send" onclick="sendAIMessage()">→</button>
+  </div>
+</div>
+
+<script src="./script.js"></script>
 </body>
 </html>
