@@ -92,11 +92,19 @@ List the key features of your project:
 
 *Add caption explaining what this shows*
 
-![Screenshot2](Add screenshot 2 here with proper name)
+<img width="1919" height="909" alt="Screenshot 2026-02-28 175335" src="https://github.com/user-attachments/assets/9576bc48-504f-4236-ad53-61dc2ebaf93d" />
+
 *Add caption explaining what this shows*
 
-![Screenshot3](Add screenshot 3 here with proper name)
+<img width="1919" height="912" alt="Screenshot 2026-02-28 174733" src="https://github.com/user-attachments/assets/913db840-b247-446a-b6b6-7bd64f257c92" />
+
 *Add caption explaining what this shows*
+
+<img width="1919" height="908" alt="Screenshot 2026-02-28 174701" src="https://github.com/user-attachments/assets/258fae2a-7545-4ff5-9c1d-399ca539565a" />
+
+<img width="1919" height="907" alt="Screenshot 2026-02-28 174400" src="https://github.com/user-attachments/assets/d11c247d-73a3-4fe8-b26c-855a2a2917d1" />
+
+
 
 #### Diagrams
 
