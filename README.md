@@ -109,7 +109,7 @@ List the key features of your project:
 #### Diagrams
 
 **System Architecture:**
-
+<img width="700" height="950" alt="PennyWise_Architecture" src="https://github.com/user-attachments/assets/d2754c70-1ed4-4948-a897-5552ee93e69c" />
 
 *Explain your system architecture - components, data flow, tech stack interaction*
 
