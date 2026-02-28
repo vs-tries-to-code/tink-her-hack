@@ -2,27 +2,28 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# Penny-Wise 🎯
+  Smart budgeting for college students — track, learn, and grow.
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: Farvish
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Vishnusree - College of Engineering,Trivandrum
+- Member 2: Adheeja S Farhan - College of Engineering,Trivandrum
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+Penny-Wise is a web-based personal finance app built specifically for college students. It helps users track daily expenses, set monthly budgets, and learn the fundamentals of budgeting and investing — all in one place. The app also features an AI-powered Financial Twin that analyses your real spending data and gives personalised, actionable financial advice.
 
 ### The Problem statement
-[What problem are you solving?]
+College students are among the most financially vulnerable groups — many are managing money independently for the first time, with no formal financial education and no tools built for their specific situation. Generic budgeting apps are too complex, too expensive, or simply not designed with a student's income patterns (scholarships, part-time jobs, family support) in mind. The result: overspending, no savings habit, and zero investment awareness.
 
 ### The Solution
-[How are you solving it?]
+Penny Wise meets students where they are. It combines a dead-simple expense tracker with a structured financial literacy walkthrough — covering budgeting strategies, stock market basics, and investment concepts — all presented as short, engaging card-based lessons. A compound growth visualiser shows students exactly what their unspent money could become if invested. And the AI Financial Twin, powered by Google Gemini, reads their actual spending data and responds like a smart friend who happens to know finance.
 
 ---
 
@@ -31,10 +32,10 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Languages used: HTML5,CSS3,JavaScript 
+- Frameworks used: none
+- Libraries used: none
+- Tools used: VS Code, Git, Vercel
 
 **For Hardware:**
 - Main components: [List main components]
@@ -46,10 +47,14 @@
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- Feature 1: 📖 Budgeting Walkthrough — 19 interactive cards teaching budgeting step-by-step: income tracking, fixed vs variable expenses, the 50/30/20 rule, Pay Yourself First, and Zero-Based Budgeting
+- Feature 2: 📈 Stocks & Investment Lessons — Card-based lessons covering stock market fundamentals, key investing concepts, and essential jargon explained in plain language for first-time investors
+- Feature 3: 📊 Compound Growth Visualiser — An interactive graph showing how money grows over time at different return rates (7%, 12%, 18%), making the power of early investing tangible and real
+- Feature 4: 🧾 Daily Expense Tracker — Log every expense with date, amount, description, shop/place, category (12 subcategories), and type (Need / Want / Additional); all data persists across sessions via localStorage
+- Feature 4: 💹 Surplus Investment Projection — Automatically calculates monthly surplus (budget minus spending) and projects its future value if invested, shown as a live canvas graph with adjustable time horizon
+- Feature 5: 🥧 Monthly Overview Dashboard — Donut chart showing Need/Want/Additional split, top spending categories, summary cards for budget vs spent vs remaining, and dynamic breakdown bars
+- Feature 6: 🧠 Finbot AI — A Gemini-powered chat assistant that has full access to the user's real expense data and gives specific, data-driven financial advice — not generic tips
+- Feature 7: 💡 Smart Tips Panel — Rule-based insights that automatically flag overspending, high want percentages, dining cost patterns, and subscription bloat based on the current month's data
 
 ---
 
